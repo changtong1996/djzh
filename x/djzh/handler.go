@@ -159,6 +159,8 @@ func handleMsgCreateAVote(ctx sdk.Context, k Keeper, msg MsgCreateAVote) (*sdk.R
 	if err == nil {
 		return nil, sdkerrors.Wrap(err, "Rv with that id already exists")
 	}
+
+	
 	k.SetAVote(ctx, aVote)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
@@ -187,11 +189,8 @@ func handleMsgCreateCVote(ctx sdk.Context, k Keeper, msg MsgCreateCVote) (*sdk.R
 	if err == nil {
 		return nil, sdkerrors.Wrap(err, "Rv with that id already exists")
 	}
-	moduleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
-	sdkError := k.CoinKeeper.SendCoins(ctx, aVote.Creator, moduleAcct)
-	if sdkError != nil {
-		return nil, sdkError
-	}
+	
+
 	k.SetCVote(ctx, cVote)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
