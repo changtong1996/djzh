@@ -1,4 +1,4 @@
-module github.com/changtong1996/test
+module github.com/changtong1996/djzh
 go 1.13
 
 require (
