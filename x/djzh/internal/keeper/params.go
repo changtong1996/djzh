@@ -6,7 +6,7 @@ import (
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/changtong/djzh2/x/djzh/internal/types"
+	"github.com/changtong/djzh/x/djzh/internal/types"
 )
 
 // GetParams returns the total set of djzh parameters.

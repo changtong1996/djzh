@@ -15,8 +15,8 @@ BUILD_FLAGS := -ldflags '$(ldflags)'
 all: install
 
 install: go.sum
-		go install -mod=readonly $(BUILD_FLAGS) ./cmd/djzhd
-		go install -mod=readonly $(BUILD_FLAGS) ./cmd/djzhcli
+		go install $(BUILD_FLAGS) ./cmd/djzhd
+		go install $(BUILD_FLAGS) ./cmd/djzhcli
 
 go.sum: go.mod
 		@echo "--> Ensure dependencies have not been modified"

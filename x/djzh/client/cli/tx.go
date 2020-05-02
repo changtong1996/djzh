@@ -2,18 +2,18 @@ package cli
 
 import (
 	"fmt"
-	"bufio"
-	"strconv"
+/*	"bufio"
+	"strconv"*/
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/client/context"
+/*	"github.com/cosmos/cosmos-sdk/client/context"*/
 	"github.com/cosmos/cosmos-sdk/codec"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/auth"
-	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	"github.com/changtong1996/djzh2/x/djzh/internal/types"
+/*	sdk "github.com/cosmos/cosmos-sdk/types"*/
+/*	"github.com/cosmos/cosmos-sdk/x/auth"*/
+/*	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"*/
+	"github.com/changtong1996/djzh/x/djzh/internal/types"
 )
 
 // GetTxCmd returns the transaction commands for this module
@@ -35,7 +35,7 @@ func GetTxCmd(cdc *codec.Codec) *cobra.Command {
 }
 
 
-func GetCmdNewVote(cdc *codec.Codec) *cobra.Command {
+/*func GetCmdNewVote(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
 		Use:   "add-vote [article_id][voteup]",
 		Short: "add a vote",
@@ -56,7 +56,7 @@ func GetCmdNewVote(cdc *codec.Codec) *cobra.Command {
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}
-}
+}*/
 
 // Example:
 //

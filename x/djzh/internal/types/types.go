@@ -7,7 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// Scavenge is the Scavenge struct
+
 type Article struct {
 	Creator      sdk.AccAddress  `json:"creator"`
 	Article_id   string          `json:"article_id"`                     // id of the article

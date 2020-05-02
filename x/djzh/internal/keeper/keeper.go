@@ -9,7 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/bank"
-	"github.com/changtong1996/djzh2/x/djzh/internal/types"
+	"github.com/changtong1996/djzh/x/djzh/internal/types"
 )
 
 // Keeper of the djzh store
@@ -35,7 +35,7 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 }
 
 
-// Get returns the pubkey from the adddress-pubkey relation
+
 func (k Keeper) GetArticle(ctx sdk.Context, article_id string) (types.Article, error) {
 	store := ctx.KVStore(k.storeKey)
 	var article types.Article
@@ -63,7 +63,6 @@ func (k Keeper) DeleteArticle(ctx sdk.Context, article_id string) {
 
 
 
-// Get returns the pubkey from the adddress-pubkey relation
 func (k Keeper) GetComment(ctx sdk.Context, comment_id string) (types.Comment, error) {
 	store := ctx.KVStore(k.storeKey)
 	var comment types.Comment

@@ -21,6 +21,19 @@ func NewHandler(k Keeper) sdk.Handler {
 		// 	return handleMsg<Action>(ctx, k, msg)
 		case MsgCreateArticle:
 			return handleMsgCreateArticle(ctx, k, msg)
+	
+		case MsgCreateComment:
+			return handleMsgCreateComment(ctx, k, msg)
+	
+		case MsgCreateReturnVisit:
+			return handleMsgCreateReturnVisit(ctx, k, msg)
+		
+		case MsgCreateAVote:
+			return handleMsgCreateAVote(ctx, k, msg)
+
+		case MsgCreateCVote:
+			return handleMsgCreateCVote(ctx, k, msg)		
+			
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", ModuleName,  msg)
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)

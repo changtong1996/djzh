@@ -15,11 +15,10 @@ type MsgCreateArticle struct {
 	Uid          string         `json:"uid"`
 	A_timestamp  string         `json:"a_timestamp"`
 	Reward       sdk.Coins      `json:"reward"`            // reward of the article
-
 }
 
 func NewMsgCreateArticle(creator sdk.AccAddress, a_text string, a_title string, tag string, article_id string,
- uid string, tid string, a_timestamp string, reward sdk.Coins) MsgCreateArticle {
+ tid string, uid string, a_timestamp string, reward sdk.Coins) MsgCreateArticle {
 	return MsgCreateArticle{
 		Creator:      creator,
 		A_text:       a_text,
@@ -39,6 +38,7 @@ const CreateArticleConst = "CreateArticle"
 //nolint
 func (msg MsgCreateArticle) Route() string { return RouterKey }
 func (msg MsgCreateArticle) Type()  string { return CreateArticleConst }
+
 func (msg MsgCreateArticle) GetSigners() []sdk.AccAddress{
 	return []sdk.AccAddress{sdk.AccAddress(msg.Creator)}
 }
@@ -75,15 +75,16 @@ type MsgCreateComment struct {
 	Reward       sdk.Coins       `json:"reward"`
 }
 
-func NewMsgCreateComment(creator sdk.AccAddress, c_text string, article_id string, reward sdk.Coins) MsgCreateComment {
+func NewMsgCreateComment(creator sdk.AccAddress, comment_id string, article_id string, tid string, uid string,
+ c_timestamp string, c_text string, reward sdk.Coins) MsgCreateComment {
 	return MsgCreateComment{
 		Creator:      creator,
-		Article_id:   article_id,
-		C_text:       c_text,
-/*		Tid:          tid,
- 		Uid:          uid,
  		Comment_id:   comment_id,
-		C_timestamp:  c_timestamp,*/
+		Article_id:   article_id,
+		Tid:          tid,
+ 		Uid:          uid,
+		C_timestamp:  c_timestamp,
+		C_text:       c_text,
 	    Reward:       reward,
 	}
 }
@@ -135,16 +136,17 @@ type MsgCreateReturnVisit struct {
 
 }
 
-func NewMsgCreateReturnVisit(creator sdk.AccAddress, article_id string, return_visit_id string, reward sdk.Coins) MsgCreateReturnVisit {
+func NewMsgCreateReturnVisit(creator sdk.AccAddress, return_visit_id string, article_id string, tid string, uid string,
+ rv_timestamp string, rv_text string, flag string, reward sdk.Coins) MsgCreateReturnVisit {
 	return MsgCreateReturnVisit{
 		Creator:             creator,
 		Return_visit_id:     return_visit_id,
 		Article_id:          article_id,
-/*		Tid:                 tid,
+		Tid:                 tid,
  		Uid:                 uid,
 		Rv_timestamp:        rv_timestamp,
 		Rv_text:             rv_text,
-		Flag:                flag,*/
+		Flag:                flag,
 		Reward:              reward,
 	}
 }
@@ -170,7 +172,7 @@ func (msg MsgCreateReturnVisit) ValidateBasic() error {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "creator can't be empty")
 	}
 	if msg.Return_visit_id == "" {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "solutionScavengerHash can't be empty")
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "rv can't be empty")
 	}
 	return nil
 }
@@ -182,25 +184,21 @@ func (msg MsgCreateReturnVisit) ValidateBasic() error {
 
 
 
-
-
 type MsgCreateAVote struct {
 	Creator          sdk.AccAddress   `json:"creator"`           // address of the article creator
-	Article_id       string           `json:"article_id"`                     // id of the article
+	Article_id       string           `json:"article_id"`        // id of the article
 	VoteUP           int              `json:"voteUP"`
 	VoteDOWN         int              `json:"voteDOWN"`
 	Num              int              `json:"num"`
-	Reward           sdk.Coins        `json:"reward"`            // reward of the article
-
 }
 
-func NewMsgCreateAVote(creator sdk.AccAddress, article_id string, voteUP int) MsgCreateAVote {
+func NewMsgCreateAVote(creator sdk.AccAddress, article_id string, voteUP int, voteDOWN int, num int) MsgCreateAVote {
 	return MsgCreateAVote{
 		Creator:             creator,
 		Article_id:          article_id,
 		VoteUP:              voteUP,    
-/*	    VoteDOWN:            voteDOWN,
-	    Num:                 num,*/
+	    VoteDOWN:            voteDOWN,
+	    Num:                 num,
 	}
 }
 
@@ -242,18 +240,16 @@ type MsgCreateCVote struct {
 	VoteUP           int              `json:"voteUP"`
 	VoteDOWN         int              `json:"voteDOWN"`
 	Num              int              `json:"num"`
-	Reward           sdk.Coins        `json:"reward"`            // reward of the article
 
 }
 
-func NewMsgCreateCVote(creator sdk.AccAddress, comment_id string, reward sdk.Coins) MsgCreateCVote {
+func NewMsgCreateCVote(creator sdk.AccAddress, comment_id string, voteUP int, voteDOWN int, num int) MsgCreateCVote {
 	return MsgCreateCVote{
 		Creator:             creator,
 		Comment_id:          comment_id,
-/*		VoteUP:              voteUP,    
+		VoteUP:              voteUP,    
 	    VoteDOWN:            voteDOWN,
-	    Num:                 num,*/
-		Reward:              reward,
+	    Num:                 num,
 	}
 }
 
@@ -278,7 +274,7 @@ func (msg MsgCreateCVote) ValidateBasic() error {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "creator can't be empty")
 	}
 	if msg.Comment_id == "" {
-		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "solutionScavengerHash can't be empty")
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "comment_id can't be empty")
 	}
 	return nil
 }
