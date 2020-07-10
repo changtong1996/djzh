@@ -157,10 +157,6 @@ func handleMsgCreateReturnVisit(ctx sdk.Context, k Keeper, msg MsgCreateReturnVi
 
 
 
-
-
-
-
 func handleMsgCreateAVote(ctx sdk.Context, k Keeper, msg MsgCreateAVote) (*sdk.Result, error) {
 	var aVote = types.ArticleVote{
 		Creator:             msg.Creator,

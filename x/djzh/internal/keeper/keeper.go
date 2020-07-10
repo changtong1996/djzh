@@ -121,7 +121,6 @@ func (k Keeper) DeleteReturnVisit(ctx sdk.Context, return_visit_id string) {
 
 
 
-
 // Get returns the pubkey from the adddress-pubkey relation
 func (k Keeper) GetAVote(ctx sdk.Context, article_id string) (types.ArticleVote, error) {
 	store := ctx.KVStore(k.storeKey)
