@@ -21,4 +21,6 @@ func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router) {
 	r.HandleFunc(fmt.Sprintf("/djzh/articles/createreturnvisit"), CreateReturnVisitHandler(cliCtx)).Methods("PUT")
 	r.HandleFunc(fmt.Sprintf("/djzh/articles/createavote"), CreateAVoteHandler(cliCtx)).Methods("PUT")
 	r.HandleFunc(fmt.Sprintf("/djzh/articles/createcvote"), CreateCVoteHandler(cliCtx)).Methods("PUT")
+	r.HandleFunc(fmt.Sprintf("/djzh/sendtoken"), SendTokenHandler(cliCtx)).Methods("PUT")
+	r.HandleFunc(fmt.Sprintf("/djzh/sendstake"), SendStakeHandler(cliCtx)).Methods("PUT")
 }

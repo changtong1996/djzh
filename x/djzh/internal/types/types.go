@@ -45,6 +45,8 @@ func (a Article) String() string {
 	))
 }
 
+
+
 type ArticleVote struct {
 	Creator      sdk.AccAddress  `json:"creator"`
 	Article_id   string          `json:"article_id"`                     // id of the article
@@ -52,6 +54,21 @@ type ArticleVote struct {
 	VoteDOWN     int             `json:"voteDOWN"`
 	Num          int             `json:"num"`
 } 
+
+func (av ArticleVote) String() string {
+	return strings.TrimSpace(fmt.Sprintf(`Creator: %s
+	Article_id: %s
+	VoteUP: %d
+	VoteDOWN: %d
+	Num: %d`,
+		av.Creator,
+		av.Article_id,
+		av.VoteUP,
+		av.VoteDOWN,
+		av.Num,
+	))
+}
+
 
 
 type Comment struct {
@@ -67,6 +84,32 @@ type Comment struct {
 } 
 
 
+func (c Comment) String() string {
+	return strings.TrimSpace(fmt.Sprintf(`Creator: %s
+	Comment_id: %s
+	Article_id: %s
+	Uid: %s
+	Tid: %s
+	C_timestamp: %s
+	C_text: %s
+	Flag: %d
+	Reward:%s`,
+		c.Creator,
+		c.Comment_id,
+		c.Article_id,
+		c.Uid,
+		c.Tid,
+		c.C_timestamp,
+		c.C_text,
+		c.Flag,
+		c.Reward,
+	))
+}
+
+
+
+
+
 type CommentVote struct {
 	Creator      sdk.AccAddress  `json:"creator"`
 	Comment_id   string          `json:"comment_id"`                     // id of the comment
@@ -74,6 +117,22 @@ type CommentVote struct {
 	VoteDOWN     int             `json:"voteDOWN"`
 	Num          int             `json:"num"`
 } 
+
+
+func (cv CommentVote) String() string {
+	return strings.TrimSpace(fmt.Sprintf(`Creator: %s
+	Comment_id: %s
+	VoteUP: %d
+	VoteDOWN: %d
+	Num: %d`,
+		cv.Creator,
+		cv.Comment_id,
+		cv.VoteUP,
+		cv.VoteDOWN,
+		cv.Num,
+	))
+}
+
 
 
 type Domain struct {
@@ -113,5 +172,25 @@ type ReturnVisit struct{
 	Reward           sdk.Coins        `json:"reward"`
 }
 
-
+func (rv ReturnVisit) String() string {
+	return strings.TrimSpace(fmt.Sprintf(`Creator: %s
+	Return_visit_id: %s
+	Article_id: %s
+	Tid:%s
+	Uid:%s
+	Rv_timestamp:%s
+	Rv_text:%s
+	Flag:%s
+	Reward:%s`,
+		rv.Creator,
+		rv.Return_visit_id,
+		rv.Article_id,
+		rv.Tid,
+		rv.Uid,
+		rv.Rv_timestamp,
+		rv.Rv_text,
+		rv.Flag,
+		rv.Reward,
+	))
+}
 

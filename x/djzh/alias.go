@@ -43,4 +43,6 @@ type (
 	MsgCreateReturnVisit= types.MsgCreateReturnVisit
 	MsgCreateAVote      = types.MsgCreateAVote
 	MsgCreateCVote      = types.MsgCreateCVote
+	MsgSendStake        = types.MsgSendStake
+	MsgSendToken        = types.MsgSendToken
 )

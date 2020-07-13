@@ -34,6 +34,12 @@ func NewHandler(k Keeper) sdk.Handler {
 		case MsgCreateCVote:
 			return handleMsgCreateCVote(ctx, k, msg)		
 			
+		case MsgSendStake:
+			return handleMsgSendStake(ctx, k, msg)	
+			
+		case MsgSendToken:
+			return handleMsgSendToken(ctx, k, msg)	
+
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", ModuleName,  msg)
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
@@ -212,6 +218,43 @@ func handleMsgCreateCVote(ctx sdk.Context, k Keeper, msg MsgCreateCVote) (*sdk.R
 	)
 	return &sdk.Result{Events: ctx.EventManager().Events()}, nil
 }
+
+
+
+
+
+// Send the stake from the admin account to user account
+func handleMsgSendStake(ctx sdk.Context, k Keeper, msg MsgSendStake) (*sdk.Result, error) {
+	err := k.CoinKeeper.SendCoins(ctx, msg.FromAddr, msg.ToAddr, msg.Amt)
+	if err != nil {
+		return nil, err
+	}
+	return &sdk.Result{}, nil
+}
+
+// Send the award token according to user's percentage of stake 
+func handleMsgSendToken(ctx sdk.Context, k Keeper, msg MsgSendToken) (*sdk.Result, error) {
+	_, err := k.CoinKeeper.AddCoins(ctx, msg.ToAddr, msg.Amt)
+	if err != nil {
+		return nil, err
+	}
+	return &sdk.Result{}, nil
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*// handde<Action> does x
 func handleMsg<Action>(ctx sdk.Context, k Keeper, msg Msg<Action>) (*sdk.Result, error) {
 	err := k.<Action>(ctx, msg.ValidatorAddr)

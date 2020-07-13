@@ -280,6 +280,97 @@ func (msg MsgCreateCVote) ValidateBasic() error {
 }
 
 
+
+
+
+
+type MsgSendStake struct {
+	FromAddr          sdk.AccAddress   `json:"fromAddr"`           
+	ToAddr            sdk.AccAddress   `json:"toAddr"`                    
+	Amt    	          sdk.Coins        `json:"amt"`
+}
+
+func NewMsgSendStake(fromAddr sdk.AccAddress, toAddr sdk.AccAddress, amt sdk.Coins) MsgSendStake {
+	return MsgSendStake{
+		FromAddr:            fromAddr,
+		ToAddr:              toAddr,
+		Amt:                 amt,
+	}
+}
+
+const SendStakeConst = "SendStake"
+
+
+//nolint
+func (msg MsgSendStake) Route() string { return RouterKey }
+func (msg MsgSendStake) Type()  string { return SendStakeConst }
+func (msg MsgSendStake) GetSigners() []sdk.AccAddress{
+	return []sdk.AccAddress{sdk.AccAddress(msg.FromAddr)}
+}
+
+func (msg MsgSendStake) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
+}
+
+// ValidateBasic validity check for the AnteHandler
+func (msg MsgSendStake) ValidateBasic() error {
+	if msg.FromAddr.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "FromAddr can't be empty")
+	}
+	if msg.ToAddr.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "ToAddr can't be empty")
+	}
+	if !msg.Amt.IsAllPositive() {
+		return sdkerrors.ErrInsufficientFunds
+	}
+	return nil
+}
+
+
+
+
+
+
+type MsgSendToken struct {        
+	ToAddr            sdk.AccAddress   `json:"toAddr"`                    
+	Amt    	          sdk.Coins        `json:"amt"`
+}
+
+func NewMsgSendToken(toAddr sdk.AccAddress, amt sdk.Coins) MsgSendToken {
+	return MsgSendToken{
+		ToAddr:              toAddr,
+		Amt:                 amt,
+	}
+}
+
+const SendTokenConst = "SendStake"
+
+
+//nolint
+func (msg MsgSendToken) Route() string { return RouterKey }
+func (msg MsgSendToken) Type()  string { return SendTokenConst }
+func (msg MsgSendToken) GetSigners() []sdk.AccAddress{
+	return []sdk.AccAddress{sdk.AccAddress(msg.ToAddr)}
+}
+
+func (msg MsgSendToken) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
+}
+
+// ValidateBasic validity check for the AnteHandler
+func (msg MsgSendToken) ValidateBasic() error {
+	if msg.ToAddr.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "ToAddr can't be empty")
+	}
+	if !msg.Amt.IsAllPositive() {
+		return sdkerrors.ErrInsufficientFunds
+	}
+	return nil
+}
+
+
 // TODO: Describe your actions, these will implment the interface of `sdk.Msg`
 /*
 verify interface at compile time
