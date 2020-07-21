@@ -264,7 +264,7 @@ func CreateCVoteHandler(cliCtx context.CLIContext) http.HandlerFunc {
 type SendTokenReq struct {
 	BaseReq          rest.BaseReq     `json:"base_req"`
 	ToAddr           string           `json:"toaddr"`           
-	Amount           string           `json:"string"`
+	Amount           string           `json:"amount"`
 }
 
 func SendTokenHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -315,7 +315,7 @@ type SendStakeReq struct {
 	BaseReq          rest.BaseReq     `json:"base_req"`
 	FromAddr         string           `json:"fromaddr"`
 	ToAddr           string           `json:"toaddr"`           
-	Amount           string           `json:"string"`
+	Amount           string           `json:"amount"`
 }
 
 func SendStakeHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -332,13 +332,13 @@ func SendStakeHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		fromaddr, err := sdk.AccAddressFromBech32(req.FromAddr)
+		from, err := sdk.AccAddressFromBech32(req.FromAddr)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
 
-		toaddr, err := sdk.AccAddressFromBech32(req.ToAddr)
+		to, err := sdk.AccAddressFromBech32(req.ToAddr)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -351,7 +351,7 @@ func SendStakeHandler(cliCtx context.CLIContext) http.HandlerFunc {
 		}
 
 		// create the message
-		msg := types.NewMsgSendStake(fromaddr, toaddr, coins)
+		msg := types.NewMsgSendStake(from, to, coins)
 		err = msg.ValidateBasic()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())

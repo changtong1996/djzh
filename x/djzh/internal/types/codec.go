@@ -12,6 +12,9 @@ func RegisterCodec(cdc *codec.Codec) {
 	cdc.RegisterConcrete(MsgCreateReturnVisit{}, "djzh/MsgCreateReturnVisit", nil)
 	cdc.RegisterConcrete(MsgCreateAVote{}, "djzh/MsgCreateAVote", nil)
 	cdc.RegisterConcrete(MsgCreateCVote{}, "djzh/MsgCreateCVote", nil)
+	cdc.RegisterConcrete(MsgSendStake{}, "djzh/MsgSendStake", nil)
+	cdc.RegisterConcrete(MsgSendToken{}, "djzh/MsgSendToken", nil)
+
 }
 
 // ModuleCdc defines the module codec

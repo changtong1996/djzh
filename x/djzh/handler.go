@@ -4,9 +4,10 @@ import (
 	"fmt"
 
 	"github.com/tendermint/tendermint/crypto"
+	"github.com/changtong1996/djzh/x/djzh/internal/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/changtong1996/djzh/x/djzh/internal/types"
+
 )
 
 // NewHandler creates an sdk.Handler for all the djzh type messages
@@ -14,11 +15,6 @@ func NewHandler(k Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) (*sdk.Result, error) {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 		switch msg := msg.(type) {
-		// TODO: Define your msg cases
-		// 
-		//Example:
-		// case Msg<Action>:
-		// 	return handleMsg<Action>(ctx, k, msg)
 		case MsgCreateArticle:
 			return handleMsgCreateArticle(ctx, k, msg)
 	
@@ -225,7 +221,7 @@ func handleMsgCreateCVote(ctx sdk.Context, k Keeper, msg MsgCreateCVote) (*sdk.R
 
 // Send the stake from the admin account to user account
 func handleMsgSendStake(ctx sdk.Context, k Keeper, msg MsgSendStake) (*sdk.Result, error) {
-	err := k.CoinKeeper.SendCoins(ctx, msg.FromAddr, msg.ToAddr, msg.Amt)
+	err := k.CoinKeeper.SendCoins(ctx, msg.FromAddr, msg.ToAddr, msg.Amount)
 	if err != nil {
 		return nil, err
 	}
@@ -234,8 +230,8 @@ func handleMsgSendStake(ctx sdk.Context, k Keeper, msg MsgSendStake) (*sdk.Resul
 
 // Send the award token according to user's percentage of stake 
 func handleMsgSendToken(ctx sdk.Context, k Keeper, msg MsgSendToken) (*sdk.Result, error) {
-	_, err := k.CoinKeeper.AddCoins(ctx, msg.ToAddr, msg.Amt)
-	if err != nil {
+	_, err := k.CoinKeeper.AddCoins(ctx, msg.ToAddr, msg.Amount)
+	if err !=  nil {
 		return nil, err
 	}
 	return &sdk.Result{}, nil

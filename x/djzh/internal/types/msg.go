@@ -5,6 +5,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+
 type MsgCreateArticle struct {
 	Creator      sdk.AccAddress `json:"creator"`           // address of the article creator
 	A_text       string         `json:"a_text"`              // 
@@ -285,16 +286,16 @@ func (msg MsgCreateCVote) ValidateBasic() error {
 
 
 type MsgSendStake struct {
-	FromAddr          sdk.AccAddress   `json:"fromAddr"`           
-	ToAddr            sdk.AccAddress   `json:"toAddr"`                    
-	Amt    	          sdk.Coins        `json:"amt"`
+	FromAddr          sdk.AccAddress   `json:"fromaddr"`           
+	ToAddr            sdk.AccAddress   `json:"toaddr"`                    
+	Amount    	      sdk.Coins        `json:"amount"`
 }
 
-func NewMsgSendStake(fromAddr sdk.AccAddress, toAddr sdk.AccAddress, amt sdk.Coins) MsgSendStake {
+func NewMsgSendStake(fromaddr sdk.AccAddress, toaddr sdk.AccAddress, amount sdk.Coins) MsgSendStake {
 	return MsgSendStake{
-		FromAddr:            fromAddr,
-		ToAddr:              toAddr,
-		Amt:                 amt,
+		FromAddr:            fromaddr,
+		ToAddr:              toaddr,
+		Amount:              amount,
 	}
 }
 
@@ -321,7 +322,7 @@ func (msg MsgSendStake) ValidateBasic() error {
 	if msg.ToAddr.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "ToAddr can't be empty")
 	}
-	if !msg.Amt.IsAllPositive() {
+	if !msg.Amount.IsAllPositive() {
 		return sdkerrors.ErrInsufficientFunds
 	}
 	return nil
@@ -333,14 +334,14 @@ func (msg MsgSendStake) ValidateBasic() error {
 
 
 type MsgSendToken struct {        
-	ToAddr            sdk.AccAddress   `json:"toAddr"`                    
-	Amt    	          sdk.Coins        `json:"amt"`
+	ToAddr            sdk.AccAddress   `json:"toaddr"`                    
+	Amount    	      sdk.Coins        `json:"amount"`
 }
 
-func NewMsgSendToken(toAddr sdk.AccAddress, amt sdk.Coins) MsgSendToken {
+func NewMsgSendToken(toaddr sdk.AccAddress, amount sdk.Coins) MsgSendToken {
 	return MsgSendToken{
-		ToAddr:              toAddr,
-		Amt:                 amt,
+		ToAddr:              toaddr,
+		Amount:              amount,
 	}
 }
 
@@ -364,7 +365,7 @@ func (msg MsgSendToken) ValidateBasic() error {
 	if msg.ToAddr.Empty() {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "ToAddr can't be empty")
 	}
-	if !msg.Amt.IsAllPositive() {
+	if !msg.Amount.IsAllPositive() {
 		return sdkerrors.ErrInsufficientFunds
 	}
 	return nil

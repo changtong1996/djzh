@@ -29,6 +29,8 @@ var (
 	// variable aliases
 	ModuleCdc     = types.ModuleCdc
 	// TODO: Fill out variable aliases
+	NewMsgSendStake        = types.NewMsgSendStake
+	NewMsgSendToken        = types.NewMsgSendToken
 )
 
 type (
