@@ -172,6 +172,13 @@ type ReturnVisit struct{
 	Reward           sdk.Coins        `json:"reward"`
 }
 
+
+type SendToken struct{
+	ToAddr          sdk.AccAddress    `json:"roaddr"`
+	Amount          sdk.Coins         `json:"amount"`
+	Percentage      string            `json:"percentage"`
+}
+
 func (rv ReturnVisit) String() string {
 	return strings.TrimSpace(fmt.Sprintf(`Creator: %s
 	Return_visit_id: %s

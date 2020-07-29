@@ -118,10 +118,6 @@ func (k Keeper) DeleteReturnVisit(ctx sdk.Context, return_visit_id string) {
 
 
 
-
-
-
-// Get returns the pubkey from the adddress-pubkey relation
 func (k Keeper) GetAVote(ctx sdk.Context, article_id string) (types.ArticleVote, error) {
 	store := ctx.KVStore(k.storeKey)
 	var aVote types.ArticleVote
@@ -149,9 +145,6 @@ func (k Keeper) DeleteAVote(ctx sdk.Context, article_id string) {
 
 
 
-
-
-// Get returns the pubkey from the adddress-pubkey relation
 func (k Keeper) GetCVote(ctx sdk.Context, comment_id string) (types.CommentVote, error) {
 	store := ctx.KVStore(k.storeKey)
 	var cVote types.CommentVote
@@ -174,4 +167,13 @@ func (k Keeper) SetCVote(ctx sdk.Context, cVote types.CommentVote ) {
 func (k Keeper) DeleteCVote(ctx sdk.Context, comment_id string) {
 	store := ctx.KVStore(k.storeKey)
 	store.Delete([]byte(comment_id))
+}
+
+
+func (k Keeper) SetSendToken(ctx sdk.Context, sendtoken types.SendToken ) {
+	toaddr := sendtoken.ToAddr
+	store := ctx.KVStore(k.storeKey)
+	bz := k.cdc.MustMarshalBinaryLengthPrefixed(sendtoken)
+	key := []byte(toaddr)
+	store.Set(key, bz)
 }

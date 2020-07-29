@@ -265,6 +265,7 @@ type SendTokenReq struct {
 	BaseReq          rest.BaseReq     `json:"base_req"`
 	ToAddr           string           `json:"toaddr"`           
 	Amount           string           `json:"amount"`
+	Percentage       string           `json:"percentage"`
 }
 
 func SendTokenHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -294,7 +295,7 @@ func SendTokenHandler(cliCtx context.CLIContext) http.HandlerFunc {
 		}
 
 		// create the message
-		msg := types.NewMsgSendToken(addr, coins)
+		msg := types.NewMsgSendToken(addr, coins, req.Percentage)
 		err = msg.ValidateBasic()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
@@ -314,7 +315,9 @@ func SendTokenHandler(cliCtx context.CLIContext) http.HandlerFunc {
 type SendStakeReq struct {
 	BaseReq          rest.BaseReq     `json:"base_req"`
 	FromAddr         string           `json:"fromaddr"`
-	ToAddr           string           `json:"toaddr"`           
+	ToAddr           string           `json:"toaddr"`
+	Signer1          string           `json:"signer1"`
+	Signer2          string           `json:"signer2"`
 	Amount           string           `json:"amount"`
 }
 
@@ -338,6 +341,18 @@ func SendStakeHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
+		signaddr1, err := sdk.AccAddressFromBech32(req.Signer1)
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		signaddr2, err := sdk.AccAddressFromBech32(req.Signer2)
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+
 		to, err := sdk.AccAddressFromBech32(req.ToAddr)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
@@ -351,7 +366,7 @@ func SendStakeHandler(cliCtx context.CLIContext) http.HandlerFunc {
 		}
 
 		// create the message
-		msg := types.NewMsgSendStake(from, to, coins)
+		msg := types.NewMsgSendStake(from, to, signaddr1, signaddr2, coins)
 		err = msg.ValidateBasic()
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())

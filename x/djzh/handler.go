@@ -3,7 +3,6 @@ package djzh
 import (
 	"fmt"
 
-	"github.com/tendermint/tendermint/crypto"
 	"github.com/changtong1996/djzh/x/djzh/internal/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -60,11 +59,12 @@ func handleMsgCreateArticle(ctx sdk.Context, k Keeper, msg MsgCreateArticle) (*s
 	if err == nil {
 		return nil, sdkerrors.Wrap(err, "Article with that hash already exists")
 	}
-	moduleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
-	sdkError := k.CoinKeeper.SendCoins(ctx, article.Creator, moduleAcct, article.Reward)
-	if sdkError != nil {
-		return nil, sdkError
+
+	_, err1 := k.CoinKeeper.AddCoins(ctx, article.Creator, article.Reward)
+	if err1 !=  nil {
+		return nil, err1
 	}
+
 	k.SetArticle(ctx, article)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
@@ -102,11 +102,10 @@ func handleMsgCreateComment(ctx sdk.Context, k Keeper, msg MsgCreateComment) (*s
 	if err == nil {
 		return nil, sdkerrors.Wrap(err, "Comment with that id already exists")
 	}
-	//need to modify
-	moduleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
-	sdkError := k.CoinKeeper.SendCoins(ctx, comment.Creator, moduleAcct, comment.Reward)
-	if sdkError != nil {
-		return nil, sdkError
+
+	_, err1 := k.CoinKeeper.AddCoins(ctx, comment.Creator, comment.Reward)
+	if err1 !=  nil {
+		return nil, err1
 	}
 	k.SetComment(ctx, comment)
 	ctx.EventManager().EmitEvent(
@@ -139,11 +138,11 @@ func handleMsgCreateReturnVisit(ctx sdk.Context, k Keeper, msg MsgCreateReturnVi
 	if err == nil {
 		return nil, sdkerrors.Wrap(err, "Rv with that id already exists")
 	}
-	moduleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
-	sdkError := k.CoinKeeper.SendCoins(ctx, rv.Creator, moduleAcct, rv.Reward)
-	if sdkError != nil {
-		return nil, sdkError
+	_, err1 := k.CoinKeeper.AddCoins(ctx, rv.Creator, rv.Reward)
+	if err1 !=  nil {
+		return nil, err1
 	}
+
 	k.SetReturnVisit(ctx, rv)
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
@@ -230,43 +229,19 @@ func handleMsgSendStake(ctx sdk.Context, k Keeper, msg MsgSendStake) (*sdk.Resul
 
 // Send the award token according to user's percentage of stake 
 func handleMsgSendToken(ctx sdk.Context, k Keeper, msg MsgSendToken) (*sdk.Result, error) {
+	var sendtoken = types.SendToken{
+		ToAddr:           msg.ToAddr,
+		Amount:           msg.Amount,
+		Percentage:       msg.Percentage,
+	}
 	_, err := k.CoinKeeper.AddCoins(ctx, msg.ToAddr, msg.Amount)
 	if err !=  nil {
 		return nil, err
 	}
+
+	k.SetSendToken(ctx, sendtoken)
 	return &sdk.Result{}, nil
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*// handde<Action> does x
-func handleMsg<Action>(ctx sdk.Context, k Keeper, msg Msg<Action>) (*sdk.Result, error) {
-	err := k.<Action>(ctx, msg.ValidatorAddr)
-	if err != nil {
-		return nil, err
-	}
-
-	// TODO: Define your msg events
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(
-			sdk.EventTypeMessage,
-			sdk.NewAttribute(sdk.AttributeKeyModule, AttributeValueCategory),
-			sdk.NewAttribute(sdk.AttributeKeySender, msg.ValidatorAddr.String()),
-		),
-	)
-
-	return &sdk.Result{Events: ctx.EventManager().Events()}, nil
-}
-*/

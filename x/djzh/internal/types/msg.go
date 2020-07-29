@@ -286,15 +286,19 @@ func (msg MsgCreateCVote) ValidateBasic() error {
 
 
 type MsgSendStake struct {
-	FromAddr          sdk.AccAddress   `json:"fromaddr"`           
-	ToAddr            sdk.AccAddress   `json:"toaddr"`                    
-	Amount    	      sdk.Coins        `json:"amount"`
+	FromAddr          sdk.AccAddress           `json:"fromaddr"`           
+	ToAddr            sdk.AccAddress           `json:"toaddr"`
+	Signer1           sdk.AccAddress           `json:"signer1"`
+	Signer2           sdk.AccAddress           `json:"signer2"`                    
+	Amount    	      sdk.Coins                `json:"amount"`
 }
 
-func NewMsgSendStake(fromaddr sdk.AccAddress, toaddr sdk.AccAddress, amount sdk.Coins) MsgSendStake {
+func NewMsgSendStake(fromaddr sdk.AccAddress, toaddr sdk.AccAddress, signer1 sdk.AccAddress, signer2 sdk.AccAddress, amount sdk.Coins) MsgSendStake {
 	return MsgSendStake{
 		FromAddr:            fromaddr,
 		ToAddr:              toaddr,
+		Signer1:             signer1,
+		Signer2:             signer2,
 		Amount:              amount,
 	}
 }
@@ -306,7 +310,7 @@ const SendStakeConst = "SendStake"
 func (msg MsgSendStake) Route() string { return RouterKey }
 func (msg MsgSendStake) Type()  string { return SendStakeConst }
 func (msg MsgSendStake) GetSigners() []sdk.AccAddress{
-	return []sdk.AccAddress{sdk.AccAddress(msg.FromAddr)}
+	return []sdk.AccAddress{sdk.AccAddress(msg.FromAddr), sdk.AccAddress(msg.Signer1), sdk.AccAddress(msg.Signer2)}
 }
 
 func (msg MsgSendStake) GetSignBytes() []byte {
@@ -336,16 +340,18 @@ func (msg MsgSendStake) ValidateBasic() error {
 type MsgSendToken struct {        
 	ToAddr            sdk.AccAddress   `json:"toaddr"`                    
 	Amount    	      sdk.Coins        `json:"amount"`
+	Percentage        string           `json:"percentage"`
 }
 
-func NewMsgSendToken(toaddr sdk.AccAddress, amount sdk.Coins) MsgSendToken {
+func NewMsgSendToken(toaddr sdk.AccAddress, amount sdk.Coins, percentage string) MsgSendToken {
 	return MsgSendToken{
 		ToAddr:              toaddr,
 		Amount:              amount,
+		Percentage:          percentage,
 	}
 }
 
-const SendTokenConst = "SendStake"
+const SendTokenConst = "SendToken"
 
 
 //nolint
